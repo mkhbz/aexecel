@@ -16,11 +16,13 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.ts', '.json'],
     },
-    devtool: 'source-map',// 打包出的js文件是否生成map文件（方便浏览器调试）
-    mode: 'production',
+    // 添加source-map
+    devtool: 'source-map',
+    // 入口文件
     entry: {
         'ts': './src/index.ts',
     },
+    // 打包出来的文件
     output: {
         filename: '[name].js',// 生成的fiename需要与package.json中的main一致
         path: path.resolve(__dirname, 'dist'),
@@ -29,6 +31,7 @@ module.exports = {
     // loader
     module: {
         rules: [
+            // 对ts/tsx文件使用tslint-loader
             {
                 test: /\.tsx?$/,
                 use: [
@@ -41,6 +44,7 @@ module.exports = {
                 ],
                 exclude: /node_modules/,
             },
+            // 对ts/tsx文件使用tsconfig.json
             {
                 test: /\.tsx?$/,
                 use: [
@@ -56,5 +60,6 @@ module.exports = {
             },
         ],
     },
+    // clean plugin
     plugins: [new CleanWebpackPlugin(pathsToClean, cleanOptions)],
 };
