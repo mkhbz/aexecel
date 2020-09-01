@@ -1,6 +1,6 @@
 const { module } = require("./webpack.config")
 
-module.exports = 
+module.exports =
 {
   // env 设置启用的环境
   "env": {
@@ -8,4 +8,4 @@ module.exports =
     "commonjs": true,
     "es6": true,
     "node": true
-}
+  }

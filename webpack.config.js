@@ -1,18 +1,8 @@
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-
-// the path(s) that should be cleaned
-let pathsToClean = ['dist'];
-
-// the clean options to use
-let cleanOptions = {
-    root: path.resolve(__dirname),
-    // exclude: ['shared.js'],
-    verbose: true,
-    dry: false,
-};
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = {
+    // 扩展名
     resolve: {
         extensions: ['.js', '.ts', '.json'],
     },
@@ -20,7 +10,7 @@ module.exports = {
     devtool: 'source-map',
     // 入口文件
     entry: {
-        'ts': './src/index.ts',
+        index: './src/index.ts',
     },
     // 打包出来的文件
     output: {
@@ -38,7 +28,7 @@ module.exports = {
                     {
                         loader: 'tslint-loader',
                         options: {
-                            configFile: path.resolve(__dirname, './tslint.json'),
+                            configFile: path.resolve(__dirname, './tslint.js'),
                         },
                     },
                 ],
@@ -60,6 +50,6 @@ module.exports = {
             },
         ],
     },
-    // clean plugin
-    plugins: [new CleanWebpackPlugin(pathsToClean, cleanOptions)],
+    // plugins
+    plugins: [new CleanWebpackPlugin()],
 };

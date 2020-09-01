@@ -6,9 +6,7 @@ function isIE(): Boolean {
 // 导出方法
 export default function JSON2SCV() {
   if (!isIE()) {
-
     aTagExport()
-
   }
   // 对activeXobject的处理
   activeXObjectExport()
