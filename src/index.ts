@@ -1,10 +1,8 @@
-console.log('开始')
 // ie浏览器支持使用activeXoBJECT
-function isIE(): Boolean {
+function isIE() {
   return window.ActiveXObject ? true : false
 }
-// 导出方法
-export default function JSON2SCV() {
+function JSON2SCV() {
   if (!isIE()) {
     aTagExport()
   }
@@ -13,10 +11,13 @@ export default function JSON2SCV() {
 }
 // activeXobject
 function activeXObjectExport() {
-
 }
 // a标签
 function aTagExport() {
-  const aElement: HTMLAnchorElement = document.createElement("a");
+  const aElement = document.createElement('a');
   document.querySelector('body').appendChild(aElement);
+  return 'a'
 }
+module.exports = {
+  JSON2SCV
+}  

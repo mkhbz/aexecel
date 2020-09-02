@@ -21,19 +21,6 @@ module.exports = {
     // loader
     module: {
         rules: [
-            // 对ts/tsx文件使用tslint-loader
-            {
-                test: /\.tsx?$/,
-                use: [
-                    {
-                        loader: 'tslint-loader',
-                        options: {
-                            configFile: path.resolve(__dirname, './tslint.js'),
-                        },
-                    },
-                ],
-                exclude: /node_modules/,
-            },
             // 对ts/tsx文件使用tsconfig.json
             {
                 test: /\.tsx?$/,
