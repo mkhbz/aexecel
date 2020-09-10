@@ -1,5 +1,5 @@
 export namespace AEXECEL {
-
+  'use strict'
   export class AExecel {
     private fileExtension: string//文件扩展名
     private fileName: String//文件名称
