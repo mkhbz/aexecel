@@ -1,9 +1,7 @@
+import {FileType} from './utils/constants' 
 export namespace AEXECEL {
   'use strict'
 
-  enum fileType {
-    'csv', 'xml'
-  }
 
   export class AExecel {
     private fileName: String//文件名称
@@ -15,13 +13,13 @@ export namespace AEXECEL {
     }
 
     // 创建一条a标签的链接
-    private createLink(fileName: String, linkUrl: string, fileExtension: fileType) {
+    private createLink(fileName: String, linkUrl: string, fileExtension: FileType) {
       let aTag = document.createElement('a')
       aTag.download = `${fileName}.${fileExtension}`
       document.body.appendChild(aTag)
       aTag.href = linkUrl
       aTag.click()
-      document.body.removeChild(aTag);
+      document.body.removeChild(aTag)
     }
 
     // CSV格式导出
@@ -37,11 +35,11 @@ export namespace AEXECEL {
         formatData += '\n'
       }
       const uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(formatData)
-      this.createLink(this.fileName, uri, fileType.csv)
+      this.createLink(this.fileName, uri, FileType.csv)
     }
 
     // 创建一个excel。并且导出。
-    public CreateXml(jsonData: Array<any>) {
+    public CreateXml() {
       var result = ''
       result = `<?xml version="1.0"?>
     <?mso-application progid="Excel.Sheet"?>
@@ -52,7 +50,7 @@ export namespace AEXECEL {
         xmlns:html="http://www.w3.org/TR/REC-html40">
       < /Workbook>`
 
-      this.createLink(this.fileName, result, fileType.xml)
+      this.createLink(this.fileName, result, FileType.xml)
 
     }
 
