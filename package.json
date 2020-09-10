@@ -1,6 +1,6 @@
 {
   "name": "aexecel",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "一个描述关于的",
   "//": "main的作用是让别人引用的时候不用写完整路径。比如aexecel/dist/index.js",
   "main": "dist/index.js",
