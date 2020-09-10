@@ -1,6 +1,6 @@
 export namespace AEXECEL {
   'use strict'
-  export class AExecel {
+   class AExecel {
     private fileExtension: string//文件扩展名
     private fileName: String//文件名称
     constructor(fileName: String) {
@@ -32,5 +32,5 @@ export namespace AEXECEL {
     // const formatData=
     // const uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str)
     // }
-  }
+   }
 }
