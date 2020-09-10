@@ -9,7 +9,8 @@
     "build": " webpack --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "//": "lint是对ts文件的检查，意思意思就好",
-    "lint": "./node_modules/.bin/eslint src --ext .ts "
+    "lint": "./node_modules/.bin/eslint src --ext .ts ",
+    "publish": "webpack --config webpack.config.js && npm version patch && npm publish"
   },
   "author": "",
   "license": "ISC",
