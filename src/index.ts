@@ -1,7 +1,6 @@
-import {FileType} from './utils/constants' 
+import { FileType } from './utils/constants'
 export namespace AEXECEL {
   'use strict'
-
 
   export class AExecel {
     private fileName: String//文件名称
@@ -23,13 +22,12 @@ export namespace AEXECEL {
     }
 
     // CSV格式导出
-    public CreateCSV(jsonData: Array<any>) {
+    public createCSV(jsonData: Array<any>) {
       let formatData = ''
       for (let i = 0; i < jsonData.length; i++) {
         for (let item in jsonData[i]) {
 
           //增加\t为了不让表格显示科学计数法或者其他格式
-          //此处用`取代'，具体用法搜索模板字符串 ES6特性
           formatData += `${jsonData[i][item] + '\t,'}`
         }
         formatData += '\n'
@@ -37,9 +35,23 @@ export namespace AEXECEL {
       const uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(formatData)
       this.createLink(this.fileName, uri, FileType.csv)
     }
-
-    // 创建一个excel。并且导出。
-    public CreateXml() {
+    // 以blob流的形式，组合成csv格式导出
+    public createLargerCsv(jsonData: Array<any>) {
+      let str: string
+      let blob: Blob
+      jsonData.forEach(data => {
+        Object.values(data).forEach(o => {
+          str += o
+        })
+        str += '\n'
+      })
+      blob = new Blob([str], { type: 'text/plain;charset=utf-8' })
+      //解决中文乱码问题
+      blob = new Blob([String.fromCharCode(0xFEFF), blob], { type: blob.type })
+      this.createLink(this.fileName, window.URL.createObjectURL(blob), FileType.csv)
+    }
+    // xml格式导出
+    public createXml() {
       var result = ''
       result = `<?xml version="1.0"?>
     <?mso-application progid="Excel.Sheet"?>
