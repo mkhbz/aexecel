@@ -1,14 +1,15 @@
 import { FileType } from './utils/constants'
 export namespace AEXECEL {
   'use strict'
-
   export class AExecel {
+    private startTime: Date//开始时间
+    private endTime: Date//结束时间
     private fileName: String//文件名称
     constructor(fileName: String) {
       if (fileName) {
         this.fileName = fileName
       }
-      else { fileName = '测试文件' }
+      else { fileName = '未命名文件' }
     }
 
     // 创建一条a标签的链接
@@ -21,52 +22,39 @@ export namespace AEXECEL {
       document.body.removeChild(aTag)
     }
 
-    // CSV格式导出
-    public createCSV(jsonData: Array<any>) {
-      let formatData = ''
-      for (let i = 0; i < jsonData.length; i++) {
-        for (let item in jsonData[i]) {
-
-          //增加\t为了不让表格显示科学计数法或者其他格式
-          formatData += `${jsonData[i][item] + '\t,'}`
-        }
-        formatData += '\n'
-      }
-      const uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(formatData)
-      this.createLink(this.fileName, uri, FileType.csv)
-    }
     // 以blob流的形式，组合成csv格式导出
-    public createLargerCsv(jsonData: Array<any>) {
-      let str: string
+    public createLargerCsv(titleArray: Array<String>, jsonData: Array<any>) {
+      let str: string = ''
       let blob: Blob
+      this.startTime = new Date()
+      
+      // 使用string是因为如果是0的话会不显示，
+      titleArray.forEach(title => {
+        str += `${title.toString()},`
+      })
+      str += '\n'
+      
       jsonData.forEach(data => {
         Object.values(data).forEach(o => {
-          str += o
+          str += `${o.toString()},`
         })
         str += '\n'
       })
+      
+      // 添加编码格式
       blob = new Blob([str], { type: 'text/plain;charset=utf-8' })
+
       //解决中文乱码问题
       blob = new Blob([String.fromCharCode(0xFEFF), blob], { type: blob.type })
       this.createLink(this.fileName, window.URL.createObjectURL(blob), FileType.csv)
-    }
-    // xml格式导出
-    public createXml() {
-      var result = ''
-      result = `<?xml version="1.0"?>
-    <?mso-application progid="Excel.Sheet"?>
-    <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
-        xmlns:o="urn:schemas-microsoft-com:office:office"
-        xmlns:x="urn:schemas-microsoft-com:office:excel"
-        xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
-        xmlns:html="http://www.w3.org/TR/REC-html40">
-      < /Workbook>`
-
-      this.createLink(this.fileName, result, FileType.xml)
-
+      this.endTime = new Date()
+      // 返回开始，结束时间
+      return {
+        endTime: this.endTime,
+        startTime: this.startTime
+      }
     }
 
   }
-
 
 }
