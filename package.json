@@ -1,7 +1,7 @@
 {
   "name": "aexecel",
   "version": "1.0.31",
-  "description": "一个描述关于的",
+  "description": "传入json导出excel文件",
   "//": "main的作用是让别人引用的时候不用写完整路径。比如aexecel/dist/index.js",
   "main": "dist/index.js",
   "scripts": {
