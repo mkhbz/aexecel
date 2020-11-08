@@ -1,5 +1,14 @@
-/* eslint-disable no-unused-vars */
+
+// 枚举类
 export enum FileType {
   csv = 'csv',
-  xml = 'xml'
+  xml = 'xml',
+  xls = 'xls'
+}
+
+// 接口
+export interface Ictx {
+  worksheet: string,
+  table: string,
+  sheetName: string
 }

@@ -10,12 +10,9 @@ export namespace AEXECEL {
     private hasActiveXObject: boolean//可否使用ActiveXObject
     private startTime: Date//开始时间
     private endTime: Date//结束时间
-    private fileName: String//文件名称
-    constructor(fileName: String) {
-      if (fileName) {
-        this.fileName = fileName
-      }
-      else { fileName = '未命名文件' }
+    private fileName: string//文件名称
+    constructor(fileName: string) {
+      this.fileName = fileName || (+new Date()).toString()//默认时间戳为文件名
       // 检查系统有没有ActiveXObject
       // ActiveXObject ? this.hasActiveXObject = true : this.hasActiveXObject = false
 
@@ -25,10 +22,17 @@ export namespace AEXECEL {
       const customerStyleStr = Object.keys(customerObject).map((key) => `${key}:${customerObject[key]}`).join(',')
       return customerStyleStr === '{}' ? '' : customerStyleStr.slice(1, customerStyleStr.length - 1)
     }
-    // 创建一条a标签的链接
-    private createLink(fileName: String, linkUrl: string, fileExtension: FileType) {
+    /**
+     * @typedef a链接导出
+     * @param fileName  文件名称
+     * @param linkUrl   链接
+     * @param fileExtension   文件后缀
+     */
+    private createLink(linkUrl: string, fileName?: String, fileExtension?: FileType) {
+      console.log(fileName)
+      fileExtension = fileExtension || FileType.xml//默认类型为xml
       let aTag = document.createElement('a')
-      aTag.download = `${fileName}.${fileExtension}`
+      aTag.download = `${fileName || this.fileName}.${fileExtension}`
       document.body.appendChild(aTag)
       aTag.href = linkUrl
       aTag.click()
@@ -55,7 +59,7 @@ export namespace AEXECEL {
      * 缺点：暂时不知道怎么多个sheet，数据量导出大的时候有问题
      * 优点：转化为table，比较方便,可以设置背景色等
      */
-    public createByTable(titleArray: Array<String>, jsonData: Array<any>) {
+    public createByTable(titleArray: Array<string>, jsonData: Array<any>) {
 
       const utf8Heading = '<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">'
       // table的需要模板
@@ -94,7 +98,27 @@ export namespace AEXECEL {
         // 每一列都加上去
         tableRows.push(row)
       })
-      console.log(tableRows)
+      // 最后完整的字符串内容
+      let fullTemplateStr = ''
+      //拼接整个头部
+      fullTemplateStr += template.head
+      // 增加sheet的头部
+      fullTemplateStr += template.sheet.head
+      // 加上内容
+      fullTemplateStr += 'sheet1'
+      // 增加sheet的尾部
+      fullTemplateStr += template.sheet.tail
+      // 增加上中间的部分
+      fullTemplateStr += template.mid
+      // 加上正式内容
+      fullTemplateStr += tableRows[0]
+      //拼接整个尾部
+      fullTemplateStr += template.foot
+      // 封装成为一个sheet
+      let blob = new Blob([fullTemplateStr], { type: 'application/vnd.ms-excel' })
+      //解决中文乱码问题
+      blob = new Blob([String.fromCharCode(0xFEFF), blob], { type: blob.type })
+      this.createLink(window.URL.createObjectURL(blob), this.fileName, FileType.xls)
       // 遍历数组，获取k-v，
     }
     /**
@@ -128,7 +152,7 @@ export namespace AEXECEL {
 
       //解决中文乱码问题
       blob = new Blob([String.fromCharCode(0xFEFF), blob], { type: blob.type })
-      this.createLink(this.fileName, window.URL.createObjectURL(blob), FileType.csv)
+      this.createLink(window.URL.createObjectURL(blob), this.fileName, FileType.csv)
       this.endTime = new Date()
       // 返回开始，结束时间
       return {
