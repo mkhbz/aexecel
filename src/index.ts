@@ -1,20 +1,15 @@
 /**
  * 
  * @author mk
- * @Wechat 13609724279
+ * @Wechat a13823431958
  * 
  * 多种方式导出execel文件，前端生成execel文件，本质来说是生成二进制流，代码以及注释比较方便，就不多说
  * 实例看ReadMe.md
  */
 
-import { FileType, Istyle, template, IstyleList } from './utils/constants'
+import { FileType, Istyle, template } from './utils/constants'
 export namespace AEXECEL {
   'use strict'
-  // 样式表中的元素
-  interface LinkStyle {
-    backgroundColor: String,
-    color: String
-  }
   export class AExecel {
     private hasActiveXObject: boolean//可否使用ActiveXObject
     private startTime: Date//开始时间
@@ -22,9 +17,6 @@ export namespace AEXECEL {
     private fileName: string//文件名称
     constructor(fileName: string) {
       this.fileName = fileName || (+new Date()).toString()//默认时间戳为文件名
-      // 检查系统有没有ActiveXObject
-      // ActiveXObject ? this.hasActiveXObject = true : this.hasActiveXObject = false
-
     }
 
     /**
@@ -73,6 +65,13 @@ export namespace AEXECEL {
       aTag.click()
       document.body.removeChild(aTag)
     }
+
+    /**
+     * @description 将表格的每一项创建并添加到数据中
+     * @param titleArray Array 标题列表
+     * @param jsonData 内容体
+     * @param styleList 样式列表
+     */
     private createRowArray(titleArray: Array<string>, jsonData: Array<string>, styleList?: any) {
 
       const tableRows = []//放数据的地方
@@ -104,7 +103,7 @@ export namespace AEXECEL {
       return tableRows
     }
     /**
-     * @typedef 把样式拼接成字符串的形式
+     *@typedef 把样式拼接成字符串的形式
      *@param styleList Array 样式对象 
      */
 
