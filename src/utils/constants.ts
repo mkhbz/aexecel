@@ -19,10 +19,13 @@ export interface IstyleList {
 
 // 单个样式的实例
 export interface Istyle {
+  'text-align': string,
+  'background-color': string,
   // ['background-color':string]:string
-  width?: string,//宽度
-  height?: string,//高度
-  color?: string//颜色
+  width?: string,//宽度 100(px)
+  height?: string,//高度 100(px)
+  color?: string//颜色 #00ff00
+  border: string//border 1px solid #ccc
 }
 //静态变量
 // table转化需要的变量

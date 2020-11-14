@@ -94,11 +94,7 @@ export namespace AEXECEL {
         row = '<tr>'
         // 竖排
         Object.keys(tr).forEach(td => {
-          if (styleList[td]) {
-            // 添加样式
-            row += `<td${styleList[td]}>${tr[td]}</td>`
-          }
-          row += `<td>${tr[td]}</td>`
+          styleList[td] ? row += `<td${styleList[td]}>${tr[td]}</td>` : row += `<td>${tr[td]}</td>`
         })
         row += '</tr>'
         // 每一列都加上去
@@ -118,7 +114,7 @@ export namespace AEXECEL {
 
       Object.keys(styleList).forEach((styleKey) => {
         let str = ' style=\''//注意，这儿是空了一个格子的
-        Object.keys(styleList[styleKey]).forEach(_o=>{
+        Object.keys(styleList[styleKey]).forEach(_o => {
           str += `${_o}:${styleList[styleKey][_o]};`
         })
         str.slice(str.length, 1)//除去最后的空格，毕竟还是要严谨点的
